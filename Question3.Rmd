@@ -1,0 +1,53 @@
+---
+title: "Final Project Q3"
+author: "Wenjing Xu"
+date: "October 31, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+To implement K-Means algorithm, we should do following steps.
+
+1. Randomly choose K points (which is 3 here) as the initial centers.
+
+2. For each observation, determine which cluster center is the cloest to it using Euclidean distance measure. Then, assign that observation to the corresponding cluster.  
+
+3. Compute the mean location of the points in each cluster. Set this mean location as the new cluster center point. 
+
+4. Repeat step 2 and 3, until there is no more change for clusters.
+
+```{r}
+## Import Library and Data
+library('rattle')
+data(wine)
+X <- wine[-1]
+
+## Run k-means algorithm
+run_kmeans <- function(data,k){
+  data <- as.matrix(data)
+  num_points <- nrow(data)
+  num_measurements <- ncol(data)
+  start_mean <- data[sample(1:num_points, k, replace=F),]
+  new_index <- rep(0,num_points)
+  for(i in 1:5){
+    distance <- matrix(0,num_points,k)
+    for (j in 1:k){
+      distance[,j] <- apply((data-matrix(start_mean[j,],nrow=num_points,ncol=num_measurements,byrow=T))^2,1,sum)
+    }
+    new_index <- apply(distance,1,which.min)
+    for (n in 1:k){
+      start_mean[j] <- apply(data[which(new_index == n),],2,mean)
+    }
+  }
+  return (new_index)
+}
+
+run_kmeans(X,3)
+
+```
+
+
+
