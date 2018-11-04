@@ -1,6 +1,6 @@
 ---
 title: "Final Project Q3"
-author: "Wenjing Xu"
+author: "Wenjing Xu, Yanfei Zhou, Yijia Zhao"
 date: "October 31, 2018"
 output: pdf_document
 ---
