@@ -10,20 +10,34 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Question 1 Metropolis-Hastings
 
-## 1.
+## Part 1
+
+Implement Metropolis-Hastings algorithm to sample from a Beta distribution with parameters (6,4), we need the following steps. 
+
+1. Choose a starting value $\theta_0$. This will be generated from a uniform distribution (as required by question setting).
+
+2. At each iteration, draw a candidate $\theta^*$ from a jumpting functin with the form $\phi_{prop}|\phi_{old}$ ~ $Beta(c\phi_{old}, c(1-\phi_{old})$. This will help us to define the proposal function. 
+
+3. Define an acceptence ratio, so that if we accept $\theta^*$ and add it into the chain with the probability given by min{1, acceptance ratio}. 
+
+4. If $\theta^*$ is not accepted, then stay at that point. 
+
+5. Repeat the process until $\theta$ does not change. 
 
 The code for Metropolis-Hastings algorithm is shown as follows.
 
 ```{r}
 Metropolis_Hastings_sampler <- function(c,chain_length,start_value){
-  chain <- numeric(chain_length)
-  accept_ratio <- 0
+  chain <- numeric(chain_length) # define a vector to store samples
   for (i in 1:chain_length){
-    proposed <- rbeta(1,c*start_value,c*(1-start_value))
+    # generate random value from the given form of proposal function  
+    proposed <- rbeta(1,c*start_value,c*(1-start_value)) 
+    # define the acceptence ratio, by which to accept the new candidate
     accept_ratio <- dbeta(proposed,6,4)*dbeta(start_value,c*proposed,c*(1-proposed))/
       (dbeta(start_value,6,4)*dbeta(proposed,c*start_value,c*(1-start_value)))
+    # generate a random variable from uniform distribution to decide whether accept the new candidate or not
     temp <- runif(1,0,1)
-    if (temp < accept_ratio){
+    if (temp < accept_ratio){ 
       chain[i] <- proposed
       start_value <- proposed
     }else{
@@ -32,15 +46,19 @@ Metropolis_Hastings_sampler <- function(c,chain_length,start_value){
   }
   return(chain)
 }
+
+```
+
+## Part 2
+We set c = 1, and run for 10,000 total iterations without discarding any initial samples. 
+```{r}
 c <- 1
 iterations <- 1000
 start <- runif(1)
 chain <- Metropolis_Hastings_sampler(c,iterations,start)
 ```
 
-## 2.
-
-Now we use the following commands to evaluate the performace of this sampler.
+Then, we provide a trace plot of this sampler and an autocorrelation plot, as well as a histogram of the draw to evaluate the performance of the sampler.
 
 ```{r}
 par(mfrow=c(1,3)) 
@@ -53,6 +71,8 @@ hist(draws, main = "histogram")
 
 Compare the histogram of draws with target distribution of Beta(6,4).
 
+- First, graphically compare these two. 
+
 ```{r}
 par(mfrow=c(1,2))
 hist(draws, main = "histogram of draws",nclass = 15)
@@ -60,14 +80,14 @@ sample <- rbeta(iterations,6,4)
 hist(sample, main = "histogram of Beta(6,4)",nclass = 15)
 ```
 
-Then we calculate the Kolmogorov-Smirnov statistic using ks.test().
+- Second, use Kolmogorov-Smirnov statistic to compare these two.
 ```{r}
 ks.test(draws,"pbeta",6,4)
 ```
 
-## 3.
+## Part 3
 
-Re-run this sampler with c = 0.1, c = 2.5 and c = 10
+Re-run this sampler with c = 0.1, c = 2.5 and c = 10, and compare their results. 
 ```{r}
 c <- 0.1
 start <- runif(1)
@@ -102,6 +122,12 @@ hist(draws, main = "histogram with c=10")
 print(1-mean(duplicated(draws)))
 ```
 
-The higher rejection rate is, the less efficient the sampler will be. So the sampler with c=10 is most efficient. Also, the number of draws needed from the sampler before thinning and burn-in is smallest when c=10. We can see this from the autocorrelation plot. Last but not least, the histogram when c=10 is also closest to our target distribution.
+c = 10 works best. 
+
+- Fisrt, the higher rejection rate is, the less efficient the sampler will be. So the sampler with c=10 is most efficient. 
+
+- Second, the number of draws needed from the sampler before thinning and burn-in is smallest when c=10. We can see this from the autocorrelation plot. 
+
+- Last but not least, the histogram when c=10 is also closest to our target distribution.
 
 
