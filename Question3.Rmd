@@ -1,7 +1,5 @@
 ---
-title: "Final Project Q3"
-author: "Wenjing Xu, Yanfei Zhou, Yijia Zhao"
-date: "October 31, 2018"
+title: "Question 3"
 output: pdf_document
 ---
 
@@ -9,7 +7,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Question 3
+
 
 ## (1) Algorithm for K-means clustering
 
