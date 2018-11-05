@@ -1,6 +1,5 @@
 ---
 title: "Question 3"
-author: "Wenjing Xu, Yanfei Zhou, Yijia Zhao"
 output: pdf_document
 ---
 
@@ -8,7 +7,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Question 3
+
 
 ## (1) Algorithm for K-means clustering
 
