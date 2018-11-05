@@ -1,5 +1,5 @@
 ---
-title: "Question 1"
+title: "STAT37810 Final Project"
 author: "Wenjing Xu, Yanfei Zhou, Yijia Zhao"
 output:
   html_document: default
@@ -11,9 +11,9 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Question 1 Metropolis-Hastings
+## Question 1 Metropolis-Hastings
 
-## Part 1
+### Part 1
 
 Implement Metropolis-Hastings algorithm to sample from a Beta distribution with parameters (6,4), we need the following steps. 
 
@@ -93,7 +93,7 @@ acceptance_rate_c1
 
 
 
-## Part 2
+### Part 2
 
 We provide a trace plot of this sampler and an autocorrelation plot, as well as a histogram of the draw to evaluate the performance of the sampler.
 ```{r}
@@ -124,7 +124,7 @@ The Kolmogorov–Smirnov statistic measures a distance between the empirical dis
 
 
 
-## Part 3
+### Part 3
 
 Re-run this sampler with c = 0.1, c = 2.5 and c = 10, and compare their results. 
 ```{r}
